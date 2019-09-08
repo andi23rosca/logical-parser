@@ -1,0 +1,16 @@
+(in-package :ale)
+
+(defun push-to-list (item ls)
+  "Appends item to end of list"
+  (reverse (cons item (reverse ls))))
+
+(defun implication (n m)
+  (or m (not n)))
+
+
+(defmacro with-initial (value &rest body)
+  "Wrap this macro around code and use :revert-to-initial to revert a variable to the value it had before the wrapped code mutated it."
+  (let ((initial-value (gensym)))
+    (let ((new-body (subst `(setf ,value ,initial-value) :revert-to-initial body)))
+    `(let ((,initial-value ,value))
+       ,@new-body))))

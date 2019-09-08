@@ -1,0 +1,9 @@
+(defun load-packages (ls)
+   (handler-bind ((warning #'ignore-warning))
+     (ql:quickload ls)))
+(defun ignore-warning (condition)
+   (declare (ignore condition))
+   (muffle-warning))
+(load-packages '(:cl-json :hunchentoot))
+(defpackage :ale
+  (:use :cl :hunchentoot :cl-json))
