@@ -335,4 +335,6 @@
 	    (remove-stars token)))))
 
 (defmethod nandify ((p parser))
-  (prefix-nand (parse-nand (ast (tree p)))))
+  (if (not (predicates p))
+      ""
+      (prefix-nand (parse-nand (ast (tree p))))))
