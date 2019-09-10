@@ -3,7 +3,7 @@
   :description "Logical formula parser and evaluator"
   :version "0.0.1"
   :serial T
-  :depends-on ("cl-json" "hunchentoot")
+  :depends-on ("cl-json" "hunchentoot" "lisp-unit")
   :components ((:file "packages")
 	       (:file "globals")
 	       (:file "lexer")

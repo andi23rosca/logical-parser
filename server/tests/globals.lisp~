@@ -1,0 +1,8 @@
+(in-package :ale-tests)
+
+
+(define-test implication
+  (assert-equal t (implication nil nil))
+  (assert-equal t (implication nil t))
+  (assert-equal nil (implication t nil))
+  (assert-equal t (implication t t)))
