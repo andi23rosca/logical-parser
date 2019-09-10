@@ -320,9 +320,11 @@
 	   `(nand ,(parse-nand first)
 		  ,(parse-nand second)))))
       ast))
+(defun not-empty-listp (ls)
+  (and (listp ls) ls))
 
 (defun prefix-nand (ast)
-  (if (listp ast)
+  (if (not-empty-listp ast)
       (concatenate 'string
 		   "%("
 		   (prefix-nand (cadr ast))
@@ -330,7 +332,7 @@
 		   (prefix-nand (caddr ast))
 		   ")")
       (let ((token (string ast)))
-	(if (= 1 (length token))
+	(if (is-bool ast)
 	    (write-to-string (bool->int ast))
 	    (remove-stars token)))))
 
