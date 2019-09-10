@@ -87,9 +87,9 @@
 
 (defmethod infix ((tree formula-tree))
   (let ((infixed (ast tree)))
-    (if (not (listp infixed))
-	(if (= 1 (length (string infixed)))
-	    infixed
+    (if (or (not (listp infixed)) (not infixed))
+	(if (or (string= "T" (string infixed)) (string= "NIL" (string infixed)))
+	    (write-to-string (bool->int infixed))
 	    (remove-stars (string infixed)))
 	(progn
 	  (setf infixed (subst  ">" 'implication infixed))
