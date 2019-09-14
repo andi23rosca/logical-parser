@@ -1,0 +1,6 @@
+(in-package :ale-tests)
+
+(define-test parser
+  (let ((p (make-instance 'ale::parser)))
+    (with-accessors ((tree ale::tree) (predicates ale::predicates)) p
+      
