@@ -24,7 +24,7 @@
 	   (list
 	    :is-valid is-valid
 	    :infix (infix (tree p))
-	    ;:ast (ast (tree p))
+	    :ast (ast (tree p))
 	    :predicates
 	    (loop for pr in (predicates p)
 	       collect (remove-stars pr))
