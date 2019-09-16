@@ -81,7 +81,7 @@ export default {
     axios
       .get("http://localhost:8080", {
         params: {
-          input: "&(A,B)"
+          input: ">(|(A,B),&(C,~(D)))"
         }
       })
       .then(r => {
