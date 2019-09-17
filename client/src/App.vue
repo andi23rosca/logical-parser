@@ -1,17 +1,19 @@
 <template>
   <div id="app">
+    <div class="flex">
+      <input type="text" class="" name="" id="">
+      <button>Parse</button>
+    </div>
     infix: {{ data.infix | infix }}
     <br />
     dnf: {{ data.dnf }}
+    <Graph :graph="graphString" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import Viz from "viz.js";
-import { Module, render } from "viz.js/full.render.js";
-
-const viz = new Viz({ Module, render });
+import Graph from "./Graph.vue";
 
 const binaryList = ["or", "and", "implication", "eql", "nand"];
 const nameToSymbol = name => {
@@ -61,6 +63,7 @@ function buildDotString(ast, name = getUniqueName()) {
 }
 
 export default {
+  components: {Graph},
   filters: {
     infix(str) {
       if (str === undefined) return "";
@@ -74,7 +77,9 @@ export default {
   },
   data() {
     return {
-      data: {}
+      graphString: "",
+      data: {
+      }
     };
   },
   mounted() {
@@ -88,22 +93,10 @@ export default {
         this.data = r.data;
         this.graphString = `
         graph logic {
-          node [fontname = "Open Sans"]
+          node [fontname = "Arial"]
           ${buildDotString(r.data.ast)}
         }
       `;
-        viz
-          .renderSVGElement(this.graphString)
-          .then(function(element) {
-            document.body.appendChild(element);
-          })
-          .catch(error => {
-            // Create a new Viz instance (@see Caveats page for more info)
-            viz = new Viz({ workerURL });
-
-            // Possibly display the error
-            console.error(error);
-          });
       });
   }
 };
