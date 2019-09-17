@@ -1,13 +1,29 @@
 <template>
-  <div id="app">
-    <div class="flex">
-      <input type="text" class="" name="" id="">
-      <button>Parse</button>
+  <div id="app" class="mt-5 border container mx-auto p-5 shadow-lg rounded">
+    <h1 class="text-xl font-bold text-purple-600 mb-4">Logical parser</h1>
+    <div class="flex items-center mb-5">
+      <input
+        v-model="input"
+        type="text"
+        class="outline-none border focus:shadow-outline rounded bg-gray-200 px-2 py-1 w-64"
+        placeholder="Enter formula here"
+        autofocus
+      />
+      <button
+        class="bg-purple-600 border border-purple-700 rounded px-3 ml-4 py-2 text-white outline-none focus:shadow-outline"
+        @click="parse"
+      >
+        Parse
+      </button>
+      <div v-if="!isValid" class="text-red-600 ml-10">Formula is not valid</div>
     </div>
-    infix: {{ data.infix | infix }}
-    <br />
-    dnf: {{ data.dnf }}
-    <Graph :graph="graphString" />
+    <div v-show="!fetching" class="mt-10">
+      <h2 class="text-lg font-bold text-purple-600 mb-3">Results</h2>
+      infix: {{ data.infix | infix }}
+      <br />
+      dnf: {{ data.dnf }}
+      <Graph :graph="graphString" />
+    </div>
   </div>
 </template>
 
@@ -63,7 +79,7 @@ function buildDotString(ast, name = getUniqueName()) {
 }
 
 export default {
-  components: {Graph},
+  components: { Graph },
   filters: {
     infix(str) {
       if (str === undefined) return "";
@@ -77,27 +93,36 @@ export default {
   },
   data() {
     return {
+      input: ">(|(A,B),&(C,~(D)))",
+      fetching: true,
+      isValid: true,
       graphString: "",
-      data: {
-      }
+      data: {}
     };
   },
-  mounted() {
-    axios
-      .get("http://localhost:8080", {
-        params: {
-          input: ">(|(A,B),&(C,~(D)))"
-        }
-      })
-      .then(r => {
-        this.data = r.data;
-        this.graphString = `
-        graph logic {
-          node [fontname = "Arial"]
-          ${buildDotString(r.data.ast)}
-        }
-      `;
-      });
+  methods: {
+    parse() {
+      this.fetching = true;
+      axios
+        .get("http://localhost:8080", {
+          params: {
+            input: this.input
+          }
+        })
+        .then(r => {
+          this.data = r.data;
+          this.graphString = `
+          graph logic {
+            node [fontname = "Arial"]
+            ${buildDotString(r.data.ast)}
+          }
+        `;
+          this.fetching = false;
+        })
+        .catch(() => {
+          this.isValid = false;
+        });
+    }
   }
 };
 </script>
