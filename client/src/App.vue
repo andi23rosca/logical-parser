@@ -17,20 +17,25 @@
       </button>
       <div v-if="!isValid" class="text-red-600 ml-10">Formula is not valid</div>
     </div>
-    <div v-if="!fetching" class="mt-10">
-      <h2 class="text-lg font-bold text-purple-600 mb-3">Results</h2>
-      infix: {{ data.infix | infix }}
-      <br />
-      predicates: {{ data.predicates.join(",") }}
-      <br />
-      hex: {{ data.hex }}
-      <br />
-      dnf: {{ data.dnf }}
-      <br />
-      simplified dnf: {{ data.simplifiedDnf }}
-    </div>
-    <div v-show="!fetching">
-      <Graph :graph="graphString" />
+    <div class="flex mt-10">
+      <div v-if="!fetching" class="w-1/2">
+        <h2 class="text-lg font-bold text-purple-600 mb-3">Results</h2>
+        <div class="results-grid">
+          <span class="text-gray-700">infix:</span>
+          <span class="">{{ data.infix | infix }}</span>
+          <span class="text-gray-700">predicates:</span>
+          <span class="">{{ data.predicates.join(",") }}</span>
+          <span class="text-gray-700">hex:</span>
+          <span class="">{{ data.hex }}</span>
+          <span class="text-gray-700">dnf:</span>
+          <span class="">{{ data.dnf }}</span>
+          <span class="text-gray-700">simplified dnf:</span>
+          <span class="">{{ data.simplifiedDnf }}</span>
+        </div>
+      </div>
+      <div v-show="!fetching" class="w-1/2">
+        <Graph :graph="graphString" />
+      </div>
     </div>
   </div>
 </template>
@@ -149,3 +154,10 @@ export default {
   }
 };
 </script>
+<style>
+.results-grid {
+  display: grid;
+  grid-template-columns: max-content auto;
+  grid-gap: 1rem;
+}
+</style>
