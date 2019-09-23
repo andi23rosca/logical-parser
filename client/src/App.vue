@@ -22,7 +22,7 @@
         <h2 class="text-lg font-bold text-purple-600 mb-3">Results</h2>
         <div class="results-grid">
           <span class="text-gray-700">infix:</span>
-          <span class="">{{ data.infix | infix }}</span>
+          <span class="">{{ data.infix }}</span>
           <span class="text-gray-700">predicates:</span>
           <span class="">{{ data.predicates.join(",") }}</span>
           <span class="text-gray-700">truth table</span>
@@ -104,19 +104,18 @@ function buildDotString(ast, name = getUniqueName()) {
   return `${name} [label = "${ast.replace("*", "")}"]`;
 }
 
+function toInfix(str) {
+  if (str === undefined) return "";
+  str = str.replace(/[&]/, "⋀");
+  str = str.replace(/[~]/, "¬");
+  str = str.replace(/[|]/, "⋁");
+  str = str.replace(/[>]/, "⇒");
+  str = str.replace(/[=]/, "⇔");
+  return str;
+}
+
 export default {
   components: { Graph, TruthTable },
-  filters: {
-    infix(str) {
-      if (str === undefined) return "";
-      str = str.replace(/[&]/, "⋀");
-      str = str.replace(/[~]/, "¬");
-      str = str.replace(/[|]/, "⋁");
-      str = str.replace(/[>]/, "⇒");
-      str = str.replace(/[=]/, "⇔");
-      return str;
-    }
-  },
   data() {
     return {
       input: ">(|(A,B),&(C,~(D)))",
@@ -152,6 +151,7 @@ export default {
         })
         .then(r => {
           this.data = r.data;
+          this.data.infix = toInfix(r.data.infix);
           this.graphString = `
           graph logic {
             node [fontname = "Arial"]
