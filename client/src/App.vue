@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="mt-5 border container mx-auto p-5 shadow-lg rounded">
     <h1 class="text-xl font-bold text-purple-600 mb-4">Logical parser</h1>
-    <div class="flex items-center mb-5">
+    <form class="flex items-center mb-5" @submit.prevent="parse">
       <input
         v-model="input"
         type="text"
@@ -11,12 +11,12 @@
       />
       <button
         class="bg-purple-600 border border-purple-700 rounded px-3 ml-4 py-2 text-white outline-none focus:shadow-outline"
-        @click="parse"
+        type="submit"
       >
         Parse
       </button>
       <div v-if="!isValid" class="text-red-600 ml-10">Formula is not valid</div>
-    </div>
+    </form>
     <div class="mt-10">
       <div v-if="!fetching">
         <h2 class="text-lg font-bold text-purple-600 mb-3">Results</h2>
