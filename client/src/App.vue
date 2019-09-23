@@ -17,14 +17,26 @@
       </button>
       <div v-if="!isValid" class="text-red-600 ml-10">Formula is not valid</div>
     </div>
-    <div class="flex mt-10">
-      <div v-if="!fetching" class="w-1/2">
+    <div class="mt-10">
+      <div v-if="!fetching">
         <h2 class="text-lg font-bold text-purple-600 mb-3">Results</h2>
         <div class="results-grid">
           <span class="text-gray-700">infix:</span>
           <span class="">{{ data.infix | infix }}</span>
           <span class="text-gray-700">predicates:</span>
           <span class="">{{ data.predicates.join(",") }}</span>
+          <span class="text-gray-700">truth table</span>
+          <truth-table
+            :infix="data.infix"
+            :predicates="data.predicates"
+            :rows="data.truthTable"
+          />
+          <span class="text-gray-700">simplified table</span>
+          <truth-table
+            :infix="data.infix"
+            :predicates="data.predicates"
+            :rows="data.simplifiedTruthTable"
+          />
           <span class="text-gray-700">hex:</span>
           <span class="">{{ data.hex }}</span>
           <span class="text-gray-700">dnf:</span>
@@ -33,7 +45,7 @@
           <span class="">{{ data.simplifiedDnf }}</span>
         </div>
       </div>
-      <div v-show="!fetching" class="w-1/2">
+      <div v-show="!fetching">
         <Graph :graph="graphString" />
       </div>
     </div>
@@ -43,6 +55,7 @@
 <script>
 import axios from "axios";
 import Graph from "./Graph.vue";
+import TruthTable from "./TruthTable.vue";
 
 const binaryList = ["or", "and", "implication", "eql", "nand"];
 const nameToSymbol = name => {
@@ -92,7 +105,7 @@ function buildDotString(ast, name = getUniqueName()) {
 }
 
 export default {
-  components: { Graph },
+  components: { Graph, TruthTable },
   filters: {
     infix(str) {
       if (str === undefined) return "";
