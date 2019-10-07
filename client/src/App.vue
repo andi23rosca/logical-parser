@@ -17,8 +17,8 @@
       </button>
       <div v-if="!isValid" class="text-red-600 ml-10">Formula is not valid</div>
     </form>
-    <div class="mt-10">
-      <div v-if="!fetching">
+    <div class="mt-10 flex">
+      <div v-if="!fetching" class="w-1/2">
         <h2 class="text-lg font-bold text-purple-600 mb-3">Results</h2>
         <div class="results-grid">
           <span class="text-gray-700">infix:</span>
@@ -45,7 +45,7 @@
           <span class="">{{ data.simplifiedDnf }}</span>
         </div>
       </div>
-      <div v-show="!fetching">
+      <div v-show="!fetching" class="w-1/2">
         <Graph :graph="graphString" />
       </div>
     </div>
@@ -106,11 +106,11 @@ function buildDotString(ast, name = getUniqueName()) {
 
 function toInfix(str) {
   if (str === undefined) return "";
-  str = str.replace(/[&]/, "⋀");
-  str = str.replace(/[~]/, "¬");
-  str = str.replace(/[|]/, "⋁");
-  str = str.replace(/[>]/, "⇒");
-  str = str.replace(/[=]/, "⇔");
+  str = str.replace(/[&]/g, "⋀");
+  str = str.replace(/[~]/g, "¬");
+  str = str.replace(/[|]/g, "⋁");
+  str = str.replace(/[>]/g, "⇒");
+  str = str.replace(/[=]/g, "⇔");
   return str;
 }
 
