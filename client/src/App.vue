@@ -43,6 +43,8 @@
           <span class="">{{ data.dnf }}</span>
           <span class="text-gray-700">simplified dnf:</span>
           <span class="">{{ data.simplifiedDnf }}</span>
+          <span class="text-gray-700">nandified:</span>
+          <span class="">{{ data.nandified }}</span>
         </div>
       </div>
       <div v-show="!fetching" class="w-1/2">

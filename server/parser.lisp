@@ -202,7 +202,8 @@
 				     (concatenate 'string "~(" (remove-stars pred) ")")
 				     (if (= 2 val)
 					 "remove"
-				     (remove-stars pred))))))))
+					 (remove-stars pred))))))))
+      (print dnf-predicates)
       (parse-dnf-minterms dnf-predicates))))
 
 
